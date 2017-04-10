@@ -22,10 +22,12 @@ public class Parser {
    }
    
    public Constant constant() {
-      if (lex.matchStringConstant())
-         return new StringConstant(lex.eatStringConstant());
-      else
-         return new IntConstant(lex.eatIntConstant());
+       if (lex.matchTimestampConstant())
+           return new TimestampConstant(lex.eatTimestampConstant());
+       if (lex.matchStringConstant())
+           return new StringConstant(lex.eatStringConstant());
+       else
+           return new IntConstant(lex.eatIntConstant());
    }
    
    public Expression expression() {
@@ -207,13 +209,16 @@ public class Parser {
       if (lex.matchKeyword("int")) {
          lex.eatKeyword("int");
          schema.addIntField(fldname);
-      }
-      else {
+      }else if (lex.matchKeyword("varchar")){
          lex.eatKeyword("varchar");
          lex.eatDelim('(');
          int strLen = lex.eatIntConstant();
          lex.eatDelim(')');
          schema.addStringField(fldname, strLen);
+      }
+      else {
+         lex.eatKeyword("timestamp");
+         schema.addTimeStampField(fldname);
       }
       return schema;
    }

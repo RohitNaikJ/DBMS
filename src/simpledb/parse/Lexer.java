@@ -1,5 +1,8 @@
 package simpledb.parse;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.*;
 
@@ -50,6 +53,22 @@ public class Lexer {
    public boolean matchStringConstant() {
       return '\'' == (char)tok.ttype;
    }
+
+    /**
+     * Returns true if the current token is a timestamp.
+     * @return true if the current token is a timestamp
+     */
+   public boolean matchTimestampConstant() {
+       if(!matchStringConstant())
+           return false;
+       SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); ft.setLenient(false);
+       try{
+            Date t = ft.parse(tok.sval);
+       }catch (ParseException e){
+           return false;
+       }
+       return true;
+    }
    
    /**
     * Returns true if the current token is the specified keyword.
@@ -95,7 +114,7 @@ public class Lexer {
       nextToken();
       return i;
    }
-   
+
    /**
     * Throws an exception if the current token is not 
     * a string. 
@@ -109,6 +128,20 @@ public class Lexer {
       nextToken();
       return s;
    }
+
+    /**
+     * Throws an exception if the current token is not
+     * a Timestamp.
+     * Otherwise, returns that string and moves to the next token.
+     * @return the string value of the current token
+     */
+    public String eatTimestampConstant() {
+        if (!matchTimestampConstant())
+            throw new BadSyntaxException();
+        String s = tok.sval; //constants are not converted to lower case
+        nextToken();
+        return s;
+    }
    
    /**
     * Throws an exception if the current token is not the
@@ -149,6 +182,6 @@ public class Lexer {
    private void initKeywords() {
       keywords = Arrays.asList("select", "from", "where", "and",
                                "insert", "into", "values", "delete", "update", "set", 
-                               "create", "table", "int", "varchar", "view", "as", "index", "on");
+                               "create", "table", "int", "varchar", "view", "as", "index", "on", "timestamp", "between");
    }
 }

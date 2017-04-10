@@ -50,6 +50,13 @@ public class Page {
     * a good idea to encode this value as a constant. 
     */
    public static final int INT_SIZE = Integer.SIZE / Byte.SIZE;
+
+    /**
+     * The size of a Date in bytes.
+     * This value is almost certainly 32, but it is
+     * a good idea to encode this value as a constant.
+     */
+   public static final int DATE_SIZE = 32;
    
    /**
     * The maximum size, in bytes, of a string of length n.

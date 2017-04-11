@@ -4,6 +4,8 @@ import simpledb.tx.Transaction;
 import simpledb.parse.*;
 import simpledb.query.*;
 
+import java.util.HashMap;
+
 /**
  * The object that executes SQL statements.
  * @author sciore
@@ -11,6 +13,7 @@ import simpledb.query.*;
 public class Planner {
    private QueryPlanner qplanner;
    private UpdatePlanner uplanner;
+   private static HashMap<String,Integer> cnt = new HashMap<String, Integer>();
    
    public Planner(QueryPlanner qplanner, UpdatePlanner uplanner) {
       this.qplanner = qplanner;
@@ -42,10 +45,27 @@ public class Planner {
    public int executeUpdate(String cmd, Transaction tx) {
       Parser parser = new Parser(cmd);
       Object obj = parser.updateCmd();
-      if (obj instanceof InsertData)
-         return uplanner.executeInsert((InsertData)obj, tx);
-      else if (obj instanceof DeleteData)
-         return uplanner.executeDelete((DeleteData)obj, tx);
+
+      if (obj instanceof InsertData) {
+         String tn = ((InsertData) obj).tableName();
+         int t = uplanner.executeInsert((InsertData) obj, tx);
+         if (cnt.containsKey(tn))
+            cnt.put(tn, cnt.get(tn) + t);
+         else
+            cnt.put(tn,1);
+         System.out.println("Number of Records:"+ cnt.get(tn));
+         if(cnt.get(tn) <= 100000)
+            return t;
+         else
+            throw new MemoryError();
+      }
+      else if (obj instanceof DeleteData) {
+         String tn = ((InsertData) obj).tableName();
+         int t = uplanner.executeDelete((DeleteData) obj, tx);
+         if (cnt.containsKey(tn))
+            cnt.put(tn, cnt.get(tn) - t);
+         return t;
+      }
       else if (obj instanceof ModifyData)
          return uplanner.executeModify((ModifyData)obj, tx);
       else if (obj instanceof CreateTableData)

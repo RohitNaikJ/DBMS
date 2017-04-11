@@ -137,7 +137,7 @@ public class Lexer {
      */
     public Date eatTimestampConstant() {
         if (!matchTimestampConstant())
-            throw new BadSyntaxException();
+            throw new InvalidDateFormatError();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); ft.setLenient(false);
         Date date = null;
         try {

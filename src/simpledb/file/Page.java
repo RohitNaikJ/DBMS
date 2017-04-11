@@ -185,7 +185,8 @@ public class Page {
 
    public synchronized void setDate(int offset, Date val){
        contents.position(offset);
-       byte[] byteval = (val.toString()).getBytes();
+       SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       byte[] byteval = ft.format(val).getBytes();
        contents.putInt(byteval.length);
        contents.put(byteval);
    }

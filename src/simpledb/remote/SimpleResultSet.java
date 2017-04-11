@@ -54,6 +54,8 @@ public class SimpleResultSet extends ResultSetAdapter {
            e.printStackTrace();
        }
        Date date = new Date(utilDate.getTime());
+       if(date==null)
+          System.out.println("SimpleResultSet: NULL");
        return date;
    }
 

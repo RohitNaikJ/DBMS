@@ -87,6 +87,15 @@ public class RecoveryMgr {
          return new SetStringRecord(txnum, blk, offset, oldval).writeToLog();
    }
 
+   public int setDate(Buffer buff, int offset, Date newval){
+      Date oldval = buff.getDate(offset);
+      Block blk = buff.block();
+      if (isTempBlock(blk))
+         return -1;
+      else
+         return new SetTimeRecord(txnum, blk, offset, oldval).writeToLog();
+   }
+
    /**
     * Rolls back the transaction.
     * The method iterates through the log records,

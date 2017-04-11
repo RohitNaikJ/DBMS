@@ -1,11 +1,16 @@
 package simpledb.index.btree;
 
 import static java.sql.Types.INTEGER;
+import static java.sql.Types.VARCHAR;
+import static java.sql.Types.TIMESTAMP;
+
 import simpledb.file.Block;
 import simpledb.tx.Transaction;
 import simpledb.record.*;
 import simpledb.query.*;
 import simpledb.index.Index;
+
+import java.sql.Date;
 
 /**
  * A B-tree implementation of the Index interface.
@@ -48,9 +53,13 @@ public class BTreeIndex implements Index {
       if (page.getNumRecs() == 0) {
 			// insert initial directory entry
          int fldtype = dirsch.type("dataval");
-         Constant minval = (fldtype == INTEGER) ?
-            new IntConstant(Integer.MIN_VALUE) :
-            new StringConstant("");
+         Constant minval;
+         if(fldtype == INTEGER)
+             minval = new IntConstant(Integer.MIN_VALUE);
+         else if(fldtype == TIMESTAMP)
+             minval = new TimestampConstant(new java.util.Date(0));
+         else
+             minval = new StringConstant("");
          page.insertDir(0, minval, 0);
 		}
       page.close();

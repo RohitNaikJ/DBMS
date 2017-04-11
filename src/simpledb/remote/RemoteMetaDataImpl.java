@@ -2,6 +2,8 @@ package simpledb.remote;
 
 import simpledb.record.Schema;
 import static java.sql.Types.INTEGER;
+import static java.sql.Types.TIMESTAMP;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -75,6 +77,8 @@ public class RemoteMetaDataImpl extends UnicastRemoteObject implements RemoteMet
       int fldlength = sch.length(fldname);
       if (fldtype == INTEGER)
          return 6;  // accommodate 6-digit integers
+      else if(fldtype == TIMESTAMP)
+         return 21;
       else
          return fldlength;
    }

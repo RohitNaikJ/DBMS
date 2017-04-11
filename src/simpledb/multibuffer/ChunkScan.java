@@ -1,12 +1,16 @@
 package simpledb.multibuffer;
 
 import static java.sql.Types.INTEGER;
+import static java.sql.Types.TIMESTAMP;
+import static java.sql.Types.VARCHAR;
+
 import simpledb.tx.Transaction;
 import simpledb.record.*;
 import simpledb.file.Block;
 import simpledb.query.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,8 +82,10 @@ public class ChunkScan implements Scan {
    public Constant getVal(String fldname) {
       if (sch.type(fldname) == INTEGER)
          return new IntConstant(rp.getInt(fldname));
-      else
+      else if (sch.type(fldname) == VARCHAR)
          return new StringConstant(rp.getString(fldname));
+      else
+          return new TimestampConstant(rp.getDate(fldname));
    }
    
    /**
@@ -95,8 +101,12 @@ public class ChunkScan implements Scan {
    public String getString(String fldname) {
       return rp.getString(fldname);
    }
-   
-   /**
+
+    public Date getDate(String fldname) {
+        return rp.getDate(fldname);
+    }
+
+    /**
     * @see simpledb.query.Scan#hasField(java.lang.String)
     */
    public boolean hasField(String fldname) {

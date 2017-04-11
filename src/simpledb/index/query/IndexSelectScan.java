@@ -4,6 +4,8 @@ import simpledb.record.RID;
 import simpledb.query.*;
 import simpledb.index.Index;
 
+import java.util.Date;
+
 /**
  * The scan class corresponding to the select relational
  * algebra operator.
@@ -87,7 +89,12 @@ public class IndexSelectScan implements Scan {
    public String getString(String fldname) {
       return ts.getString(fldname);
    }
-   
+
+   @Override
+   public Date getDate(String fldname) {
+      return ts.getDate(fldname);
+   }
+
    /**
     * Returns whether the data record has the specified field.
     * @see simpledb.query.Scan#hasField(java.lang.String)

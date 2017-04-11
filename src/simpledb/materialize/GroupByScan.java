@@ -115,7 +115,11 @@ public class GroupByScan implements Scan {
    public String getString(String fldname) {
       return (String)getVal(fldname).asJavaVal();
    }
-   
+
+   public Date getDate(String fldname) {
+      return (Date) getVal(fldname).asJavaVal();
+   }
+
    /* Returns true if the specified field is either a 
     * grouping field or created by an aggregation function.
     * @see simpledb.query.Scan#hasField(java.lang.String)

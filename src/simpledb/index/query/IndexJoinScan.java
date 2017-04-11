@@ -3,6 +3,8 @@ package simpledb.index.query;
 import simpledb.query.*;
 import simpledb.index.Index;
 
+import java.util.Date;
+
 /**
  * The scan class corresponding to the indexjoin relational
  * algebra operator.
@@ -107,7 +109,14 @@ public class IndexJoinScan implements Scan {
       else
          return s.getString(fldname);
    }
-   
+
+   public Date getDate(String fldname) {
+      if(ts.hasField(fldname))
+         return ts.getDate(fldname);
+      else
+         return s.getDate(fldname);
+   }
+
    /** Returns true if the field is in the schema.
      * @see simpledb.query.Scan#hasField(java.lang.String)
      */

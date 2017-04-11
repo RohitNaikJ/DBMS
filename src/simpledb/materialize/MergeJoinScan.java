@@ -2,6 +2,8 @@ package simpledb.materialize;
 
 import simpledb.query.*;
 
+import java.util.Date;
+
 /**
  * The Scan class for the <i>mergejoin</i> operator.
  * @author Edward Sciore
@@ -125,7 +127,14 @@ public class MergeJoinScan implements Scan {
       else
          return s2.getString(fldname);
    }
-   
+
+   public Date getDate(String fldname) {
+      if (s1.hasField(fldname))
+         return s1.getDate(fldname);
+      else
+         return s2.getDate(fldname);
+   }
+
    /**
     * Returns true if the specified field is in
     * either of the underlying scans.

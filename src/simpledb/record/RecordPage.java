@@ -4,6 +4,8 @@ import static simpledb.file.Page.*;
 import simpledb.file.Block;
 import simpledb.tx.Transaction;
 
+import java.util.Date;
+
 /**
  * Manages the placement and access of records in a block.
  * @author Edward Sciore
@@ -70,6 +72,11 @@ public class RecordPage {
       int position = fieldpos(fldname);
       return tx.getString(blk, position);
    }
+
+   public Date getDate(String fldname){
+       int position = fieldpos(fldname);
+       return tx.getDate(blk, position);
+   }
    
    /**
     * Stores an integer at the specified field
@@ -91,6 +98,11 @@ public class RecordPage {
    public void setString(String fldname, String val) {
       int position = fieldpos(fldname);
       tx.setString(blk, position, val);
+   }
+
+   public void setDate(String fldname, Date val){
+       int position = fieldpos(fldname);
+       tx.setDate(blk, position, val);
    }
    
    /**

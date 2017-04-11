@@ -1,10 +1,13 @@
 package simpledb.index.btree;
 
+import static java.sql.Types.VARCHAR;
 import static simpledb.file.Page.*;
 import static java.sql.Types.INTEGER;
 import simpledb.file.Page;
 import simpledb.buffer.PageFormatter;
 import simpledb.record.TableInfo;
+
+import java.sql.Date;
 
 /**
  * An object that can format a page to look like an
@@ -48,8 +51,10 @@ public class BTPageFormatter implements PageFormatter {
          int offset = ti.offset(fldname);
          if (ti.schema().type(fldname) == INTEGER)
             page.setInt(pos + offset, 0);
-         else
+         else if (ti.schema().type(fldname) == VARCHAR)
             page.setString(pos + offset, "");
+         else
+            page.setDate(pos + offset, new Date(0));
       }
    }
 }

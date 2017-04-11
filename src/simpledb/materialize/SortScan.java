@@ -118,7 +118,11 @@ public class SortScan implements Scan {
    public String getString(String fldname) {
       return currentscan.getString(fldname);
    }
-   
+
+   public Date getDate(String fldname) {
+      return currentscan.getDate(fldname);
+   }
+
    /**
     * Returns true if the specified field is in the current scan.
     * @see simpledb.query.Scan#hasField(java.lang.String)

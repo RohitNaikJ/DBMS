@@ -2,6 +2,7 @@ package simpledb.record;
 
 import static java.sql.Types.INTEGER;
 import static java.sql.Types.VARCHAR;
+import static java.sql.Types.TIMESTAMP;
 import static simpledb.file.Page.*;
 import java.util.*;
 

@@ -3,6 +3,8 @@ package simpledb.log;
 import static simpledb.file.Page.*;
 import simpledb.file.Page;
 
+import java.util.Date;
+
 /**
  * A class that provides the ability to read the values of
  * a log record.
@@ -49,6 +51,12 @@ public class BasicLogRecord {
    public String nextString() {
       String result = pg.getString(pos);
       pos += STR_SIZE(result.length());
+      return result;
+   }
+
+   public Date nextTime(){
+      Date result = pg.getDate(pos);
+      pos += 20;
       return result;
    }
 }

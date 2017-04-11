@@ -1,8 +1,14 @@
 package simpledb.query;
 
 import static java.sql.Types.INTEGER;
+import static java.sql.Types.TIMESTAMP;
+import static java.sql.Types.VARCHAR;
+
 import simpledb.tx.Transaction;
 import simpledb.record.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The Scan class corresponding to a table.
@@ -51,6 +57,8 @@ public class TableScan implements UpdateScan {
    public Constant getVal(String fldname) {
       if (sch.type(fldname) == INTEGER)
          return new IntConstant(rf.getInt(fldname));
+      else if (sch.type(fldname) == TIMESTAMP)
+         return new TimestampConstant(rf.getDate(fldname));
       else
          return new StringConstant(rf.getString(fldname));
    }
@@ -61,6 +69,10 @@ public class TableScan implements UpdateScan {
    
    public String getString(String fldname) {
       return rf.getString(fldname);
+   }
+
+   public Date getDate(String fldname){
+      return rf.getDate(fldname);
    }
    
    public boolean hasField(String fldname) {
@@ -79,8 +91,10 @@ public class TableScan implements UpdateScan {
    public void setVal(String fldname, Constant val) {
       if (sch.type(fldname) == INTEGER)
          rf.setInt(fldname, (Integer)val.asJavaVal());
-      else
+      else if(sch.type(fldname) == VARCHAR)
          rf.setString(fldname, (String)val.asJavaVal());
+      else
+          rf.setDate(fldname, (Date) val.asJavaVal());
    }
    
    public void setInt(String fldname, int val) {
@@ -89,6 +103,10 @@ public class TableScan implements UpdateScan {
    
    public void setString(String fldname, String val) {
       rf.setString(fldname, val);
+   }
+
+   public void setDate(String fldname, Date val){
+       rf.setDate(fldname, val);
    }
    
    public void delete() {

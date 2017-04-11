@@ -4,6 +4,7 @@ import simpledb.record.Schema;
 import simpledb.query.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Date;
 
 /**
  * The RMI server-side implementation of RemoteResultSet.
@@ -75,7 +76,19 @@ class RemoteResultSetImpl extends UnicastRemoteObject implements RemoteResultSet
       }
    }
 
-   /**
+    public Date getDate(String fldname) throws RemoteException {
+        try {
+            System.out.println("RRS: "+s.getDate(fldname));
+            fldname = fldname.toLowerCase(); // to ensure case-insensitivity
+            return s.getDate(fldname);
+        }
+        catch(RuntimeException e) {
+            rconn.rollback();
+            throw e;
+        }
+   }
+
+    /**
     * Returns the result set's metadata,
     * by passing its schema into the RemoteMetaData constructor.
     * @see simpledb.remote.RemoteResultSet#getMetaData()

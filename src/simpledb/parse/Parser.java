@@ -22,9 +22,11 @@ public class Parser {
    }
    
    public Constant constant() {
-       if (lex.matchTimestampConstant())
+       if (lex.matchTimestampConstant()) {
+           System.out.println("Timestamp matched");
            return new TimestampConstant(lex.eatTimestampConstant());
-       if (lex.matchStringConstant())
+       }
+       else if (lex.matchStringConstant())
            return new StringConstant(lex.eatStringConstant());
        else
            return new IntConstant(lex.eatIntConstant());

@@ -3,6 +3,8 @@ package simpledb.record;
 import simpledb.file.Block;
 import simpledb.tx.Transaction;
 
+import java.util.Date;
+
 /**
  * Manages a file of records.
  * There are methods for iterating through the records
@@ -80,7 +82,11 @@ public class RecordFile {
    public String getString(String fldname) {
       return rp.getString(fldname);
    }
-   
+
+   public Date getDate(String fldname) {
+      return rp.getDate(fldname);
+   }
+
    /**
     * Sets the value of the specified field 
     * in the current record.
@@ -99,6 +105,10 @@ public class RecordFile {
     */
    public void setString(String fldname, String val) {
       rp.setString(fldname, val);
+   }
+
+   public void setDate(String fldname, Date val){
+      rp.setDate(fldname, val);
    }
    
    /**

@@ -6,6 +6,8 @@ import simpledb.buffer.*;
 import simpledb.tx.recovery.RecoveryMgr;
 import simpledb.tx.concurrency.ConcurrencyMgr;
 
+import java.util.Date;
+
 /**
  * Provides transaction management for clients,
  * ensuring that all transactions are serializable, recoverable,
@@ -126,6 +128,12 @@ public class Transaction {
       Buffer buff = myBuffers.getBuffer(blk);
       return buff.getString(offset);
    }
+
+   public Date getDate(Block blk, int offset){
+      concurMgr.sLock(blk);
+      Buffer buff = myBuffers.getBuffer(blk);
+      return buff.getDate(offset);
+   }
    
    /**
     * Stores an integer at the specified offset 
@@ -165,6 +173,13 @@ public class Transaction {
       Buffer buff = myBuffers.getBuffer(blk);
       int lsn = recoveryMgr.setString(buff, offset, val);
       buff.setString(offset, val, txnum, lsn);
+   }
+
+   public void setDate(Block blk, int offset, Date val){
+      concurMgr.xLock(blk);
+      Buffer buff = myBuffers.getBuffer(blk);
+      int lsn = recoveryMgr.setDate(buff, offset, val);
+      buff.setDate(offset, val, txnum, lsn);
    }
    
    /**

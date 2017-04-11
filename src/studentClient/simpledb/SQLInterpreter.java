@@ -3,6 +3,7 @@ package studentClient.simpledb;
 import java.sql.*;
 import simpledb.remote.SimpleDriver;
 import java.io.*;
+import java.text.SimpleDateFormat;
 
 public class SQLInterpreter {
     private static Connection conn = null;
@@ -70,8 +71,12 @@ public class SQLInterpreter {
 					String fmt = "%" + md.getColumnDisplaySize(i);
 					if (fldtype == Types.INTEGER)
 						System.out.format(fmt + "d", rs.getInt(fldname));
-					else
+					else if(fldtype == Types.VARCHAR)
 						System.out.format(fmt + "s", rs.getString(fldname));
+					else{
+                        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+                        System.out.format(fmt + "s", ft.format(rs.getDate(fldname)));
+                    }
 				}
 				System.out.println();
 			}

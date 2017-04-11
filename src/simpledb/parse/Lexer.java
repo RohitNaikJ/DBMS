@@ -63,7 +63,7 @@ public class Lexer {
            return false;
        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); ft.setLenient(false);
        try{
-            Date t = ft.parse(tok.sval);
+           Date t = ft.parse(tok.sval);
        }catch (ParseException e){
            return false;
        }
@@ -135,12 +135,18 @@ public class Lexer {
      * Otherwise, returns that string and moves to the next token.
      * @return the string value of the current token
      */
-    public String eatTimestampConstant() {
+    public Date eatTimestampConstant() {
         if (!matchTimestampConstant())
             throw new BadSyntaxException();
-        String s = tok.sval; //constants are not converted to lower case
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); ft.setLenient(false);
+        Date date = null;
+        try {
+            date = ft.parse(tok.sval);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         nextToken();
-        return s;
+        return date;
     }
    
    /**

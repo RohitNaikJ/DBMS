@@ -3,6 +3,9 @@ package simpledb.file;
 import simpledb.server.SimpleDB;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * The contents of a disk block in memory.
@@ -52,8 +55,8 @@ public class Page {
    public static final int INT_SIZE = Integer.SIZE / Byte.SIZE;
 
     /**
-     * The size of a Date in bytes.
-     * This value is almost certainly 32, but it is
+     * The size of a in bytes.
+     * This value is almost certainly 4, but it is
      * a good idea to encode this value as a constant.
      */
    public static final int DATE_SIZE = 32;
@@ -162,5 +165,28 @@ public class Page {
       byte[] byteval = val.getBytes();
       contents.putInt(byteval.length);
       contents.put(byteval);
+   }
+
+   public synchronized Date getDate(int offset){
+       contents.position(offset);
+       int len = contents.getInt();
+       byte[] byteval = new byte[len];
+       contents.get(byteval);
+       String dString =  new String(byteval);
+       SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       try {
+           Date date = ft.parse(dString);
+           return date;
+       } catch (ParseException e) {
+           e.printStackTrace();
+       }
+        return null;
+   }
+
+   public synchronized void setDate(int offset, Date val){
+       contents.position(offset);
+       byte[] byteval = (val.toString()).getBytes();
+       contents.putInt(byteval.length);
+       contents.put(byteval);
    }
 }

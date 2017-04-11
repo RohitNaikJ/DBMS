@@ -1,5 +1,7 @@
 package simpledb.query;
 
+import java.util.Date;
+
 /**
  * The interface will be implemented by each query scan.
  * There is a Scan class for each relational
@@ -47,6 +49,8 @@ public interface Scan {
     * @return the field's string value in the current record
     */
    public String   getString(String fldname);
+
+   public Date     getDate(String fldname);
    
    /**
     * Returns true if the scan has the specified field.

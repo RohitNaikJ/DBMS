@@ -17,13 +17,8 @@ public class TimestampConstant implements Constant {
      * Create a constant by wrapping the specified int.
      * @param date the String date value
      */
-    public TimestampConstant(String date) {
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"); ft.setLenient(false);
-        try {
-            val = ft.parse(date);
-        } catch (ParseException e) {
-            throw new BadSyntaxException();
-        }
+    public TimestampConstant(Date date) {
+        val = date;
     }
 
     /**
@@ -36,7 +31,7 @@ public class TimestampConstant implements Constant {
 
     public boolean equals(Object obj) {
         TimestampConstant ic = (TimestampConstant) obj;
-        return ic != null && val.compareTo(ic.val)==0;
+        return ic != null && val.equals(ic.val);
     }
 
     public int compareTo(Constant c) {

@@ -1,11 +1,15 @@
 package simpledb.index.btree;
 
 import static java.sql.Types.INTEGER;
+import static java.sql.Types.TIMESTAMP;
+import static java.sql.Types.VARCHAR;
 import static simpledb.file.Page.*;
 import simpledb.file.Block;
 import simpledb.record.*;
 import simpledb.query.*;
 import simpledb.tx.Transaction;
+
+import java.sql.Date;
 
 /**
  * B-tree directory and leaf pages have many commonalities:
@@ -195,13 +199,21 @@ public class BTreePage {
       int pos = fldpos(slot, fldname);
       return tx.getString(currentblk, pos);
    }
+
+   private java.util.Date getDate(int slot, String fldname){
+       int pos = fldpos(slot, fldname);
+       return tx.getDate(currentblk, pos);
+   }
    
    private Constant getVal(int slot, String fldname) {
       int type = ti.schema().type(fldname);
+//      System.out.println("BTreePage: TYPE: " + type);
       if (type == INTEGER)
-         return new IntConstant(getInt(slot, fldname));
+          return new IntConstant(getInt(slot, fldname));
+      else if (type == TIMESTAMP)
+          return new TimestampConstant(getDate(slot, fldname));
       else
-         return new StringConstant(getString(slot, fldname));
+          return new StringConstant(getString(slot, fldname));
    }
    
    private void setInt(int slot, String fldname, int val) {
@@ -213,13 +225,20 @@ public class BTreePage {
       int pos = fldpos(slot, fldname);
       tx.setString(currentblk, pos, val);
    }
+
+   private void setDate(int slot, String fldname, java.util.Date val){
+       int pos = fldpos(slot, fldname);
+       tx.setDate(currentblk, pos, val);
+   }
    
    private void setVal(int slot, String fldname, Constant val) {
       int type = ti.schema().type(fldname);
       if (type == INTEGER)
          setInt(slot, fldname, (Integer)val.asJavaVal());
-      else
+      else if(type == VARCHAR)
          setString(slot, fldname, (String)val.asJavaVal());
+      else
+          setDate(slot, fldname, (java.util.Date) val.asJavaVal());
    }
    
    private void setNumRecs(int n) {

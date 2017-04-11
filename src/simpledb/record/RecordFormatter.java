@@ -1,10 +1,13 @@
 package simpledb.record;
 
 import static java.sql.Types.INTEGER;
+import static java.sql.Types.VARCHAR;
 import static simpledb.file.Page.*;
 import static simpledb.record.RecordPage.EMPTY;
 import simpledb.file.Page;
 import simpledb.buffer.PageFormatter;
+
+import java.sql.Date;
 
 /**
  * An object that can format a page to look like a block of 
@@ -43,8 +46,10 @@ class RecordFormatter implements PageFormatter {
          int offset = ti.offset(fldname);
          if (ti.schema().type(fldname) == INTEGER)
             page.setInt(pos + INT_SIZE + offset, 0);
-         else
+         else if(ti.schema().type(fldname) == VARCHAR)
             page.setString(pos + INT_SIZE + offset, "");
+         else
+            page.setDate(pos + INT_SIZE + offset, new java.util.Date(0));
       }
    }
 }

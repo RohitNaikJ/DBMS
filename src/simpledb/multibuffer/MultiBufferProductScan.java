@@ -4,6 +4,8 @@ import simpledb.tx.Transaction;
 import simpledb.record.TableInfo;
 import simpledb.query.*;
 
+import java.util.Date;
+
 /** 
  * The Scan class for the muti-buffer version of the
  * <i>product</i> operator.
@@ -94,7 +96,12 @@ public class MultiBufferProductScan implements Scan {
    public String getString(String fldname) {
       return prodscan.getString(fldname);
    }
-   
+
+   @Override
+   public Date getDate(String fldname) {
+      return prodscan.getDate(fldname);
+   }
+
    /**
     * Returns true if the specified field is in
     * either of the underlying scans.

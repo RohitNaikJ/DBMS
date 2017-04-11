@@ -3,6 +3,8 @@ package simpledb.buffer;
 import simpledb.server.SimpleDB;
 import simpledb.file.*;
 
+import java.util.Date;
+
 /**
  * An individual buffer.
  * A buffer wraps a page and stores information about its status,
@@ -60,6 +62,10 @@ public class Buffer {
       return contents.getString(offset);
    }
 
+   public Date getDate(int offset) {
+      return contents.getDate(offset);
+   }
+
    /**
     * Writes an integer to the specified offset of the
     * buffer's page.
@@ -100,6 +106,13 @@ public class Buffer {
       if (lsn >= 0)
 	      logSequenceNumber = lsn;
       contents.setString(offset, val);
+   }
+
+   public void setDate(int offset, Date val, int txnum, int lsn){
+      modifiedBy = txnum;
+      if (lsn >= 0)
+         logSequenceNumber = lsn;
+      contents.setDate(offset, val);
    }
 
    /**

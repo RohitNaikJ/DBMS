@@ -2,6 +2,8 @@ package simpledb.query;
 
 import simpledb.record.RID;
 
+import java.util.Date;
+
 /**
  * The interface implemented by all updateable scans.
  * @author Edward Sciore
@@ -27,6 +29,8 @@ public interface UpdateScan extends Scan {
     * @param val the new string value
     */
    public void setString(String fldname, String val);
+
+   public void setDate(String fldname, Date val);
    
    /**
     * Inserts a new record somewhere in the scan.

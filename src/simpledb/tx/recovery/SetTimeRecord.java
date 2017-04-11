@@ -29,7 +29,7 @@ public class SetTimeRecord implements LogRecord{
         int blknum = rec.nextInt();
         blk = new Block(filename, blknum);
         offset = rec.nextInt();
-        val = rec.nextTime();
+        val = rec.nextDate();
     }
 
     public int writeToLog() {

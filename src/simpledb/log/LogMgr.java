@@ -106,8 +106,11 @@ public class LogMgr implements Iterable<BasicLogRecord> {
          mypage.setString(currentpos, (String)val);
       else if(val instanceof Integer)
          mypage.setInt(currentpos, (Integer)val);
-      else
+      else {
+         if(val==null)
+            System.out.println("LogMgr Null");
          mypage.setDate(currentpos, (Date) val);
+      }
       currentpos += size(val);
    }
 

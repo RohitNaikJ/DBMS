@@ -54,9 +54,9 @@ public class BasicLogRecord {
       return result;
    }
 
-   public Date nextTime(){
+   public Date nextDate(){
       Date result = pg.getDate(pos);
-      pos += 20;
+      pos += 32;
       return result;
    }
 }

@@ -168,26 +168,30 @@ public class Page {
    }
 
    public synchronized Date getDate(int offset){
+//       contents.position(offset);
+//       int len = contents.getInt();
+//       byte[] byteval = new byte[len];
+//       contents.get(byteval);
+//       String dString =  new String(byteval);
+//       SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//       try {
+//           Date date = ft.parse(dString);
+//           return date;
+//       } catch (ParseException e) {
+//           e.printStackTrace();
+//       }
+//        return null;
        contents.position(offset);
-       int len = contents.getInt();
-       byte[] byteval = new byte[len];
-       contents.get(byteval);
-       String dString =  new String(byteval);
-       SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       try {
-           Date date = ft.parse(dString);
-           return date;
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-        return null;
+       return new Date(contents.getLong());
    }
 
    public synchronized void setDate(int offset, Date val){
+//       contents.position(offset);
+//       SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//       byte[] byteval = ft.format(val).getBytes();
+//       contents.putInt(byteval.length);
+//       contents.put(byteval);
        contents.position(offset);
-       SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       byte[] byteval = ft.format(val).getBytes();
-       contents.putInt(byteval.length);
-       contents.put(byteval);
+       contents.putLong(val.getTime());
    }
 }
